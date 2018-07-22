@@ -46,13 +46,8 @@ public class PostsListFragment extends Fragment {
         postAdapter = new PostAdapter(null);
 
         postViewModel.getAllPostsForList().observe(this, (posts) -> {
-            if (posts != null) {
-                postAdapter.Posts = posts;
-            } else {
-                postAdapter.Posts = new LinkedList<>();
-            }
+            postAdapter.Posts = posts;
             postAdapter.notifyDataSetChanged();
-
         });
 
         rv.setAdapter(postAdapter);

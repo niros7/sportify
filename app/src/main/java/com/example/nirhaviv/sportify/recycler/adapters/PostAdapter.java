@@ -61,6 +61,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
         public TextView Timestamp;
         public AppCompatImageView Background;
         public TextView PostText;
+        public CircleImageView RemoveButton;
 
         public PostHolder(View itemView) {
             super(itemView);
@@ -69,6 +70,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostHolder> {
             Timestamp = itemView.findViewById(R.id.post_time_ago);
             Background = itemView.findViewById(R.id.post_backround);
             PostText = itemView.findViewById(R.id.post_text);
+            RemoveButton = itemView.findViewById(R.id.remove_post_button);
         }
     }
 

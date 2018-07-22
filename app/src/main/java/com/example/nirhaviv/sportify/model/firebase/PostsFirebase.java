@@ -1,8 +1,11 @@
 package com.example.nirhaviv.sportify.model.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Pair;
 
 import com.example.nirhaviv.sportify.model.entities.Post;
+import com.example.nirhaviv.sportify.model.entities.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -10,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -70,6 +74,37 @@ public class PostsFirebase {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                listener.onSuccess(null);
+            }
+        });
+    }
+
+    public void getAllCollections(final OnSuccessListener listener) {
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference();
+
+        eventListener = postsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                DataSnapshot postsRef = dataSnapshot.child("posts");
+                DataSnapshot usersRef = dataSnapshot.child("users");
+                List<User> users = new ArrayList<>();
+                List<Post> posts = new ArrayList<>();
+
+                for (DataSnapshot postSnapshot: postsRef.getChildren()) {
+                    Post p = postSnapshot.getValue(Post.class);
+                    posts.add(p);
+                }
+
+                for (DataSnapshot postSnapshot: usersRef.getChildren()) {
+                    User u = postSnapshot.getValue(User.class);
+                    users.add(u);
+                }
+
+                listener.onSuccess(new Pair(posts, users));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onSuccess(null);
             }
         });

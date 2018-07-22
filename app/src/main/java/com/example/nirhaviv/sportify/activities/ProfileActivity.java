@@ -7,17 +7,18 @@ import android.support.v7.widget.Toolbar;
 import com.example.nirhaviv.sportify.R;
 import com.example.nirhaviv.sportify.drawer.DrawerUtils;
 import com.example.nirhaviv.sportify.fragments.PostsListFragment;
+import com.example.nirhaviv.sportify.fragments.ProfileFragment;
 
 import java.io.IOException;
 
-public class FeedActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
+        setContentView(R.layout.activity_profile);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.feed_actionbar_title);
+        toolbar.setTitle(R.string.profile_actionbar_title);
         setSupportActionBar(toolbar);
         try {
             DrawerUtils.getDrawer(this, toolbar);
@@ -29,9 +30,9 @@ public class FeedActivity extends AppCompatActivity {
         android.support.v4.app.FragmentTransaction fragmentTransaction =
                 fragmentManager.beginTransaction();
 
-        PostsListFragment feedFragment= new PostsListFragment();
+        ProfileFragment profileFragment = new ProfileFragment();
 
-        fragmentTransaction.add(R.id.feed_content, feedFragment);
+        fragmentTransaction.add(R.id.profile_content, profileFragment);
         fragmentTransaction.commit();
     }
 }

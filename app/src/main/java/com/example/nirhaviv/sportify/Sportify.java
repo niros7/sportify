@@ -19,5 +19,6 @@ public class Sportify extends Application {
         Picasso built = builder.build();
         built.setIndicatorsEnabled(true);
         built.setLoggingEnabled(true);
-        Picasso.setSingletonInstance(built);    }
+        Picasso.setSingletonInstance(built);
+    }
 }

@@ -13,6 +13,7 @@ import java.util.List;
 public class PostViewModel extends ViewModel {
     public LiveData<List<Post>> allPosts;
     public LiveData<List<PostForList>> postsForList;
+    public LiveData<List<Post>> postsForProfile;
 
     public PostViewModel() {
         super();
@@ -21,14 +22,18 @@ public class PostViewModel extends ViewModel {
         postsForList = new MutableLiveData<>();
     }
 
-
-    public LiveData<List<Post>> getAllPosts() {
-        allPosts = PostsRepository.instance.getAllPosts();
-        return allPosts;
-    }
+//    public LiveData<List<Post>> getAllPosts() {
+//        allPosts = PostsRepository.instance.getAllPosts();
+//        return allPosts;
+//    }
 
     public LiveData<List<PostForList>> getAllPostsForList() {
         postsForList = PostsRepository.instance.getAllPostsForList();
         return postsForList;
+    }
+
+    public LiveData<List<Post>> getAllProfilePosts(String uid) {
+        postsForProfile = PostsRepository.instance.getAllPostsForProfile(uid);
+        return postsForProfile;
     }
 }

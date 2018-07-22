@@ -19,7 +19,6 @@
             android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/post_profile_image"
                 android:layout_gravity="center"
                 android:layout_width="50dp"
@@ -46,6 +45,17 @@
                 android:text="A minute ago"
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:visibility="gone"
+                android:id="@+id/remove_post_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:src="@drawable/ic_menu_share"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                app:civ_circle_background_color="@color/material_drawer_primary_light"/>
         </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.AppCompatImageView

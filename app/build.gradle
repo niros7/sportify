@@ -52,7 +52,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-auth:16.0.2'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation "com.mikepenz:iconics-core:3.0.4@aar"
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation "com.mikepenz:iconics-views:3.0.4@aar"
     implementation 'com.mikepenz:fontawesome-typeface:5.0.13.0@aar'
     implementation('com.mikepenz:materialdrawer:5.9.5@aar') {
         transitive = true

@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AuthActivity" />
-        <activity android:name=".activities.FeedActivity"></activity>
+        <activity android:name=".activities.FeedActivity" />
+        <activity android:name=".activities.ProfileActivity"></activity>
     </application>
 
 </manifest>
