@@ -47,15 +47,16 @@
                 android:layout_marginRight="5dp"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:visibility="gone"
                 android:id="@+id/remove_post_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="end"
-                android:src="@drawable/ic_menu_share"
+                android:src="@drawable/baseline_delete_outline_black_18dp"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
                 android:layout_gravity="center"
-                android:layout_marginLeft="5dp"
-                app:civ_circle_background_color="@color/material_drawer_primary_light"/>
+                android:layout_marginLeft="5dp">
+            </de.hdodenhof.circleimageview.CircleImageView>
         </android.support.v7.widget.LinearLayoutCompat>
 
         <android.support.v7.widget.AppCompatImageView

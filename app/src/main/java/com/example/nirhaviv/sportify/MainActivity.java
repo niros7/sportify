@@ -34,16 +34,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        User user = new User();
-//        user.setEmail(FirebaseAuth.getInstance().getCurrentUser().getEmail());
-//        user.setName(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-//        user.setProfileUri(FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString());
-//        user.setUid(UUID.randomUUID().toString());
-//        user.setUserUid(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//        UsersFirebase.getInstance().saveUser(user);
-
-
-
         try {
             DrawerUtils.getDrawer(this, toolbar);
         } catch (IOException e) {

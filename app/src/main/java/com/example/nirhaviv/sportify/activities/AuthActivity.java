@@ -42,13 +42,13 @@ public class AuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.GONE);
+//        toolbar.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        try {
-            DrawerUtils.getDrawer(this, toolbar);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            DrawerUtils.getDrawer(this, toolbar);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
         android.support.v4.app.FragmentTransaction fragmentTransaction =

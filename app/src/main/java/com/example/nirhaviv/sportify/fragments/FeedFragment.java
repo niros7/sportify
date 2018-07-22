@@ -17,13 +17,13 @@ import com.example.nirhaviv.sportify.viewModels.PostViewModel;
 
 import java.util.LinkedList;
 
-public class PostsListFragment extends Fragment {
+public class FeedFragment extends Fragment {
 
     private LinearLayoutManager layoutManager;
     private PostViewModel postViewModel;
     private PostAdapter postAdapter;
 
-    public PostsListFragment() {
+    public FeedFragment() {
         // Required empty public constructor
     }
 
