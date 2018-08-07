@@ -26,6 +26,6 @@ public interface PostsDao {
     @Insert(onConflict = REPLACE)
     void insertAllPosts(Post... posts);
 
-    @Delete
-    void deletePost(Post post);
+    @Query("DELETE FROM Post WHERE Uid = :uid")
+    void deletePost(String uid);
 }

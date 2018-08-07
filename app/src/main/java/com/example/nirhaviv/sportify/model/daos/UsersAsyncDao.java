@@ -3,7 +3,6 @@ package com.example.nirhaviv.sportify.model.daos;
 import android.os.AsyncTask;
 
 import com.example.nirhaviv.sportify.model.AppLocalDb;
-import com.example.nirhaviv.sportify.model.entities.Post;
 import com.example.nirhaviv.sportify.model.entities.User;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -16,7 +15,7 @@ public class UsersAsyncDao {
 
             @Override
             protected User doInBackground(String... uid) {
-                User user = AppLocalDb.db.usersDao().GetUserByUid(uid[0]);
+                User user = AppLocalDb.db.usersDao().getUserByUid(uid[0]);
                 return user;
             }
 

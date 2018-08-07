@@ -18,8 +18,8 @@ public interface UsersDao {
     @Query("SELECT * FROM User")
     List<User> getAllUsers();
 
-    @Query("SELECT * FROM User WHERE Uid = :uid")
-    User GetUserByUid(String uid);
+    @Query("SELECT * FROM User WHERE userUid = :uid")
+    User getUserByUid(String uid);
 
     @Insert(onConflict = REPLACE)
     void insertUser(User user);

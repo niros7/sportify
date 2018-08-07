@@ -12,6 +12,7 @@ import com.example.nirhaviv.sportify.R;
 import com.example.nirhaviv.sportify.activities.AuthActivity;
 import com.example.nirhaviv.sportify.activities.FeedActivity;
 import com.example.nirhaviv.sportify.activities.ProfileActivity;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -25,8 +26,10 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.util.DrawerImageLoader;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.util.concurrent.Executors;
 
 public class DrawerUtils {
 
@@ -44,6 +47,7 @@ public class DrawerUtils {
         }
 
         AccountHeader headerResult = new AccountHeaderBuilder()
+                .withHeaderBackground(R.drawable.drawer_header_background)
                 .withActivity(activity)
                 .addProfiles(
                         new ProfileDrawerItem()
@@ -55,10 +59,10 @@ public class DrawerUtils {
         PrimaryDrawerItem feedItem = new PrimaryDrawerItem().withIdentifier(0).withName("feed")
                 .withIcon(R.drawable.ic_menu_gallery);
         PrimaryDrawerItem profile = new PrimaryDrawerItem().withIdentifier(1).withName("profile")
-                .withIcon(R.drawable.ic_menu_share);
+                .withIcon(R.drawable.ic_menu_send);
 
         SecondaryDrawerItem logoutItem = new SecondaryDrawerItem().withIdentifier(2).withName("logout")
-                .withIcon(R.drawable.common_google_signin_btn_icon_dark_normal);
+                .withIcon(FontAwesome.Icon.faw_user_slash);
 
         Drawer.OnDrawerItemClickListener clickListener = new Drawer.OnDrawerItemClickListener() {
             @Override
@@ -94,6 +98,7 @@ public class DrawerUtils {
                         profile,
                         new DividerDrawerItem(),
                         logoutItem)
+                .withSelectedItem(-1)
                 .withOnDrawerItemClickListener(clickListener)
                 .build();
     }

@@ -22,8 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nirhaviv.sportify.R;
+import com.example.nirhaviv.sportify.activities.AddPostActivity;
+import com.example.nirhaviv.sportify.activities.ProfileActivity;
 import com.example.nirhaviv.sportify.model.repositories.PostsRepository;
 import com.example.nirhaviv.sportify.viewModels.PostViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -53,12 +56,16 @@ public class AddPostFragment extends Fragment {
     public AddPostFragment() {
     }
 
+    public static boolean isEmpty(EditText editText) {
+        String input = editText.getText().toString().trim();
+        return input.length() == 0;
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,7 +75,6 @@ public class AddPostFragment extends Fragment {
 
         return view;
     }
-
 
     @OnClick(R.id.choose_picture)
     public void choosePictureClick(View view) {
@@ -82,17 +88,19 @@ public class AddPostFragment extends Fragment {
     public void addPostClick(View view) {
         if (validateForm()) {
             postViewModel.savePost(postText.getText().toString(), chosenPictureBitmap);
+            postViewModel.getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            Intent intent = new Intent(getContext(), ProfileActivity.class);
+            startActivity(intent);
         }
     }
 
-
-    private boolean validateForm(){
+    private boolean validateForm() {
         boolean isTextValid = false;
         boolean isPictureValid = false;
 
         if (isEmpty(postText)) {
             isTextValid = false;
-            postText.setError("Post can'w be empty");
+            postText.setError("Post can't be empty");
         } else {
             isTextValid = true;
             postText.setError(null);
@@ -100,18 +108,12 @@ public class AddPostFragment extends Fragment {
 
         if (chosenImage.getVisibility() == View.GONE) {
             isPictureValid = false;
-            Toast.makeText(getContext(), "Must choose image", Toast.LENGTH_SHORT);
+            Toast.makeText(getContext(), "Must choose an image", Toast.LENGTH_SHORT);
         } else {
             isPictureValid = true;
         }
 
         return isPictureValid && isTextValid;
-    }
-
-
-    public static boolean isEmpty(EditText editText) {
-        String input = editText.getText().toString().trim();
-        return input.length() == 0;
     }
 
     @Override

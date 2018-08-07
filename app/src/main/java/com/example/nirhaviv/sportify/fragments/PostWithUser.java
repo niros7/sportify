@@ -1,4 +1,7 @@
-package com.example.nirhaviv.sportify.model.entities;
+package com.example.nirhaviv.sportify.fragments;
+
+import com.example.nirhaviv.sportify.model.entities.Post;
+import com.example.nirhaviv.sportify.model.entities.User;
 
 public class PostWithUser {
 

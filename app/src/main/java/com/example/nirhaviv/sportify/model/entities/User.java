@@ -5,6 +5,10 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.UUID;
+
 @Entity
 public class User {
 
@@ -15,6 +19,16 @@ public class User {
     public String profileUri;
     public String email;
     public String userUid;
+
+    public User(){}
+
+    public User(FirebaseUser currentUser) {
+        this.setUserUid(currentUser.getUid());
+        this.setProfileUri(currentUser.getPhotoUrl().toString());
+        this.setName(currentUser.getDisplayName());
+        this.setEmail(currentUser.getEmail());
+        this.setUid(UUID.randomUUID().toString());
+    }
 
     public String getUserUid() {
         return userUid;

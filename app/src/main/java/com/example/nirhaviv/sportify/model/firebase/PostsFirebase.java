@@ -54,7 +54,7 @@ public class PostsFirebase {
         UploadTask uploadTask = imagesRef.putBytes(data);
         uploadTask.addOnSuccessListener(taskSnapshot -> {
             Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-            while (!urlTask.isSuccessful());
+            while (!urlTask.isSuccessful()) ;
             Uri downloadUrl = urlTask.getResult();
             listener.onSuccess(downloadUrl);
         });
@@ -75,17 +75,17 @@ public class PostsFirebase {
 
         ValueEventListener valueEventListener =
                 postsRef.orderByChild("uid").equalTo(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Post post = dataSnapshot.getValue(Post.class);
-                listener.onSuccess(post);
-            }
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Post post = dataSnapshot.getValue(Post.class);
+                        listener.onSuccess(post);
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                listener.onSuccess(null);
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        listener.onSuccess(null);
+                    }
+                });
 
         postsRef.removeEventListener(valueEventListener);
     }
@@ -180,6 +180,17 @@ public class PostsFirebase {
                 listener.onSuccess(null);
             }
         });
+
+    }
+
+    public void deletePost(String postUid) {
+        // delete post image
+        // delete post itself
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference imagesRef = storage.getReference().child("images").child(postUid);
+        imagesRef.delete();
+        FirebaseDatabase.getInstance().getReference()
+                .child("posts").child(postUid).setValue(null);
 
     }
 }

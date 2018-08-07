@@ -23,7 +23,8 @@
                 android:layout_gravity="center"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/outline_perm_identity_black_48dp"/>
 
             <TextView
                 android:id="@+id/post_user_name"
@@ -46,25 +47,24 @@
                 android:layout_weight="1"
                 android:layout_marginRight="5dp"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.mikepenz.iconics.view.IconicsButton
                 android:id="@+id/remove_post_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:textAlignment="center"
                 android:gravity="end"
-                android:src="@drawable/baseline_delete_outline_black_18dp"
-                android:scaleX="0.8"
-                android:scaleY="0.8"
                 android:layout_gravity="center"
+                android:background="@drawable/outline_delete_black_48dp"
                 android:layout_marginLeft="5dp">
-            </de.hdodenhof.circleimageview.CircleImageView>
+            </com.mikepenz.iconics.view.IconicsButton>
         </android.support.v7.widget.LinearLayoutCompat>
 
-        <android.support.v7.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/post_backround"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            app:layout_constraintTop_toBottomOf="@id/post_profile_bar"
-            android:background="@drawable/gym_background"/>
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toBottomOf="@id/post_profile_bar"/>
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/post_text"
