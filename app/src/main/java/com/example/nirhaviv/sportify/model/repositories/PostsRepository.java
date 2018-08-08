@@ -74,14 +74,11 @@ public class PostsRepository {
             task.addOnCompleteListener(Executors.newSingleThreadExecutor(), (newDownloadUri) -> {
                 Uri newUri = newDownloadUri.getResult();
                 newPost.setImageUri(newUri.toString());
-                PostsFirebase.savePost(newPost, o -> {
-                });
+                PostsFirebase.savePost(newPost, o -> {});
                 // for cache!
                 Picasso.get().load(newPost.getImageUri());
                 AppLocalDb.db.postsDao().insertPost(newPost);
             });
-
-            this.getAllPostsForProfile(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
             return null;
         });
@@ -137,24 +134,22 @@ public class PostsRepository {
         protected List<PostForList> doInBackground(String... strings) {
             final TaskCompletionSource<Pair<List<Post>, List<User>>> source = new TaskCompletionSource<>();
 
-            PostsFirebase.getInstance().getAllCollections((pair) -> source.setResult((Pair<List<Post>, List<User>>) pair));
+            PostsFirebase.getInstance().getAllCollections((pair) -> {
+                Tasks.call(Executors.newSingleThreadExecutor(), () -> {
+                    Pair<List<Post>, List<User>> tuple = (Pair<List<Post>, List<User>>) pair;
+                    List<Post> posts = tuple.first;
+                    List<User> users = tuple.second;
+                    List<PostForList> result = makePostsForList(posts, users);
+                    allPostsForList.postValue(result);
 
-            Task<Pair<List<Post>, List<User>>> task = source.getTask();
-            task.addOnCompleteListener(Executors.newSingleThreadExecutor(), task1 -> {
-                Pair<List<Post>, List<User>> tuple = task1.getResult();
-                List<Post> posts = tuple.first;
-                List<User> users = tuple.second;
-                List<PostForList> result = makePostsForList(posts, users);
-                allPostsForList.postValue(result);
-
-                AppLocalDb.db.usersDao().insertAllUsers(users.toArray(new User[0]));
-                AppLocalDb.db.postsDao().insertAllPosts(posts.toArray(new Post[0]));
+                    AppLocalDb.db.usersDao().insertAllUsers(users.toArray(new User[0]));
+                    AppLocalDb.db.postsDao().insertAllPosts(posts.toArray(new Post[0]));
+                    return true;
+                });
             });
 
             List<Post> postsFromDb = AppLocalDb.db.postsDao().getAllPosts();
             List<User> usersFromDb = AppLocalDb.db.usersDao().getAllUsers();
-
-//            allPostsForList.setValue(makePostsForList(postsFromDb, usersFromDb));
 
             return null;
         }
@@ -166,22 +161,18 @@ public class PostsRepository {
             final TaskCompletionSource<Pair<List<Post>, User>> source = new TaskCompletionSource<>();
 
             PostsFirebase.getInstance().getAllCollectionsForProfile(uid[0], (pair) -> {
-                if (!source.getTask().isComplete()) {
-                    source.setResult((Pair<List<Post>, User>) pair);
-                }
-            });
+                Tasks.call(Executors.newSingleThreadExecutor(), () -> {
+                    Pair<List<Post>, User> tuple = (Pair<List<Post>, User>) pair;
+                    List<Post> posts = tuple.first;
+                    User user = tuple.second;
+                    List<PostForList> result = makePostsForList(posts, user);
+                    allPostsForProfile.postValue(result);
 
-            Task<Pair<List<Post>, User>> task = source.getTask();
-            task.addOnCompleteListener(Executors.newSingleThreadExecutor(), task1 -> {
-                Pair<List<Post>, User> tuple = task1.getResult();
-                List<Post> posts = tuple.first;
-                User user = tuple.second;
+                    AppLocalDb.db.usersDao().insertAllUsers(user);
+                    AppLocalDb.db.postsDao().insertAllPosts(posts.toArray(new Post[0]));
 
-                List<PostForList> result = makePostsForList(posts, user);
-                allPostsForProfile.postValue(result);
-
-                AppLocalDb.db.usersDao().insertAllUsers(user);
-                AppLocalDb.db.postsDao().insertAllPosts(posts.toArray(new Post[0]));
+                    return true;
+                });
             });
 
             List<Post> postsFromDb = AppLocalDb.db.postsDao().getAllPosts();

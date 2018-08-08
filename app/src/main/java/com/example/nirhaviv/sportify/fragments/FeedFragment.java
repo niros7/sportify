@@ -73,9 +73,9 @@ public class FeedFragment extends Fragment {
         turnOnProgressBar();
         postViewModel.getAllPostsForList().observe(this, (posts) -> {
             postAdapter.Posts = posts;
+            postAdapter.notifyDataSetChanged();
             postViewModel.feedBusy.setValue(false);
             turnOffProgressBar();
-            postAdapter.notifyDataSetChanged();
         });
     }
 

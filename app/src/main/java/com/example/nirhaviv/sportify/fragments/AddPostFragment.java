@@ -88,8 +88,9 @@ public class AddPostFragment extends Fragment {
     public void addPostClick(View view) {
         if (validateForm()) {
             postViewModel.savePost(postText.getText().toString(), chosenPictureBitmap);
-            Intent intent = new Intent(getContext(), ProfileActivity.class);
-            startActivity(intent);
+            getActivity().finish();
+//            Intent intent = new Intent(getContext(), ProfileActivity.class);
+//            startActivity(intent);
         }
     }
 

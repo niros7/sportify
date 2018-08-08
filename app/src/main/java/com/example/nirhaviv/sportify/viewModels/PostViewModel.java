@@ -19,9 +19,10 @@ public class PostViewModel extends ViewModel {
 
     public LiveData<List<PostForList>> postsForList;
     public LiveData<List<PostForList>> postsForProfile;
-
     public MutableLiveData<Boolean> profileBusy;
     public MutableLiveData<Boolean> feedBusy;
+    private boolean isProfileBinded = false;
+    private boolean isPostsForListBinded = false;
 
     private PostViewModel() {
         super();
@@ -34,36 +35,35 @@ public class PostViewModel extends ViewModel {
     }
 
     public LiveData<List<PostForList>> getAllPostsForList() {
-        postsForList = PostsRepository.instance.getAllPostsForList();
-        feedBusy.setValue(true);
+        if (!isPostsForListBinded) {
+            isPostsForListBinded = true;
+            feedBusy.setValue(true);
+            postsForList = PostsRepository.instance.getAllPostsForList();
+        }
         return postsForList;
     }
 
     public LiveData<List<PostForList>> getAllProfilePosts(String uid) {
-        postsForProfile = PostsRepository.instance.getAllPostsForProfile(uid);
-        profileBusy.setValue(true);
+        if (!isProfileBinded) {
+            isProfileBinded = true;
+            profileBusy.setValue(true);
+            postsForProfile = PostsRepository.instance.getAllPostsForProfile(uid);
+        }
         return postsForProfile;
     }
 
     public void savePost(String text, Bitmap background) {
         PostsRepository.instance.savePost(text, background);
-        profileBusy.setValue(true);
-        getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
-//        update();
+        updateBusy();
     }
 
     public void deletePost(String postUid) {
         PostsRepository.instance.deletePost(postUid);
-        profileBusy.setValue(true);
-        getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-//        update();
+        updateBusy();
     }
 
-    private void update() {
+    private void updateBusy() {
         profileBusy.setValue(true);
         feedBusy.setValue(true);
-        getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        getAllPostsForList();
     }
 }

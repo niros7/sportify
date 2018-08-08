@@ -1,6 +1,5 @@
 package com.example.nirhaviv.sportify.fragments;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,8 +16,11 @@ import android.widget.ProgressBar;
 import com.example.nirhaviv.sportify.R;
 import com.example.nirhaviv.sportify.activities.AddPostActivity;
 import com.example.nirhaviv.sportify.recycler.adapters.PostAdapter;
+import com.example.nirhaviv.sportify.recycler.adapters.PostForList;
 import com.example.nirhaviv.sportify.viewModels.PostViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,6 +41,8 @@ public class ProfileFragment extends Fragment {
     private LinearLayoutManager layoutManager;
     private PostAdapter postAdapter;
 
+    private boolean isBinded = false;
+
     public ProfileFragment() {
     }
 
@@ -57,14 +61,7 @@ public class ProfileFragment extends Fragment {
             postViewModel.deletePost(item.postUid);
         };
 
-        postViewModel.profileBusy.observe(this, (isBusy) -> {
-            if (isBusy) {
-                turnOnProgressBar();
-            } else {
-                turnOffProgressBar();
-            }
-        });
-
+        turnOnProgressBar();
         bindAdapterToLivedata();
 
         recyclerView.setAdapter(postAdapter);
@@ -79,25 +76,27 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         postViewModel = PostViewModel.instance;
-
     }
 
     private void bindAdapterToLivedata() {
-        postViewModel.getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(this, (posts) -> {
-            postAdapter.Posts = posts;
-            postViewModel.profileBusy.setValue(false);
-            turnOffProgressBar();
-            postAdapter.notifyDataSetChanged();
-        });
-    }
+        if (!isBinded) {
+            isBinded = true;
+
+            postViewModel.profileBusy.observe(this, (isBusy) -> {
+                if (isBusy) {
+                    turnOnProgressBar();
+                } else {
+                    turnOffProgressBar();
+                }
+            });
+
+            postViewModel.getAllProfilePosts(
+                    FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(this, this::updatePosts);
+            }
+        }
 
     private void turnOnProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
@@ -109,6 +108,19 @@ public class ProfileFragment extends Fragment {
         progressBar.setVisibility(View.GONE);
         plusBtn.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
+    }
 
+    private void updatePosts(List<PostForList> posts) {
+        postAdapter.Posts = posts;
+        postAdapter.notifyDataSetChanged();
+        postViewModel.profileBusy.setValue(false);
+        turnOffProgressBar();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        postViewModel.profileBusy.removeObservers(this);
+        postViewModel.postsForProfile.removeObservers(this);
     }
 }
