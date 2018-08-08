@@ -104,11 +104,14 @@ public class PostsFirebase {
                 }
 
                 listener.onSuccess(postsList);
+
+                postsRef.removeEventListener(eventListener);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 listener.onSuccess(null);
+                postsRef.removeEventListener(eventListener);
             }
         });
     }
@@ -142,9 +145,9 @@ public class PostsFirebase {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onSuccess(null);
+                fbPostsRef.removeEventListener(eventListener);
             }
         });
-
     }
 
     public void getAllCollectionsForProfile(String userUid, final OnSuccessListener listener) {
@@ -178,9 +181,9 @@ public class PostsFirebase {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 listener.onSuccess(null);
+                fbPostsRef.removeEventListener(eventListener);
             }
         });
-
     }
 
     public void deletePost(String postUid) {

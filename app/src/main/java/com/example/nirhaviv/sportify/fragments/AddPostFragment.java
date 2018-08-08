@@ -64,7 +64,7 @@ public class AddPostFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+        postViewModel = PostViewModel.instance;
     }
 
     @Override
@@ -88,7 +88,6 @@ public class AddPostFragment extends Fragment {
     public void addPostClick(View view) {
         if (validateForm()) {
             postViewModel.savePost(postText.getText().toString(), chosenPictureBitmap);
-            postViewModel.getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
             Intent intent = new Intent(getContext(), ProfileActivity.class);
             startActivity(intent);
         }

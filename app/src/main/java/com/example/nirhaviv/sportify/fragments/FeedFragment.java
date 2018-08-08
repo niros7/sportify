@@ -38,7 +38,7 @@ public class FeedFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+        postViewModel = PostViewModel.instance;
     }
 
 

@@ -165,8 +165,11 @@ public class PostsRepository {
         protected List<PostForList> doInBackground(String... uid) {
             final TaskCompletionSource<Pair<List<Post>, User>> source = new TaskCompletionSource<>();
 
-            PostsFirebase.getInstance().getAllCollectionsForProfile(uid[0], (pair) ->
-                    source.setResult((Pair<List<Post>, User>) pair));
+            PostsFirebase.getInstance().getAllCollectionsForProfile(uid[0], (pair) -> {
+                if (!source.getTask().isComplete()) {
+                    source.setResult((Pair<List<Post>, User>) pair);
+                }
+            });
 
             Task<Pair<List<Post>, User>> task = source.getTask();
             task.addOnCompleteListener(Executors.newSingleThreadExecutor(), task1 -> {

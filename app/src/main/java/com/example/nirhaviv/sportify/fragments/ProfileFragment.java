@@ -55,7 +55,6 @@ public class ProfileFragment extends Fragment {
 
         postAdapter.deletePostListener = item -> {
             postViewModel.deletePost(item.postUid);
-            postViewModel.getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid());
         };
 
         postViewModel.profileBusy.observe(this, (isBusy) -> {
@@ -74,8 +73,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @OnClick(R.id.plus_fav)
-    public void addpost(View view) {
-        turnOnProgressBar();
+    public void addPost(View view) {
         Intent intent = new Intent(getContext(), AddPostActivity.class);
         startActivity(intent);
     }
@@ -88,12 +86,11 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        postViewModel = ViewModelProviders.of(this).get(PostViewModel.class);
+        postViewModel = PostViewModel.instance;
 
     }
 
     private void bindAdapterToLivedata() {
-        turnOnProgressBar();
         postViewModel.getAllProfilePosts(FirebaseAuth.getInstance().getCurrentUser().getUid()).observe(this, (posts) -> {
             postAdapter.Posts = posts;
             postViewModel.profileBusy.setValue(false);
