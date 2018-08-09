@@ -22,10 +22,12 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
@@ -95,6 +97,8 @@ public class PostsRepository {
     private List<PostForList> makePostsForList(List<Post> posts, List<User> users) {
         List<PostForList> result = new ArrayList<>();
 
+        List<PostForList> finalResult = result;
+
         posts.stream().forEach((post) -> {
             User user = users.stream().filter(
                     (user1) -> user1.getUserUid().equals(post.getUserUid()))
@@ -116,9 +120,10 @@ public class PostsRepository {
                 e.printStackTrace();
             }
 
-            result.add(postForList);
+            finalResult.add(postForList);
         });
 
+        result = finalResult.stream().sorted(Comparator.comparing(PostForList::getTimestamp).reversed()).collect(Collectors.toList());
         return result;
     }
 
