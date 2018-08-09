@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -100,9 +101,16 @@ public class PostsRepository {
         List<PostForList> finalResult = result;
 
         posts.stream().forEach((post) -> {
-            User user = users.stream().filter(
+            Optional<User> optUser = users.stream().filter(
                     (user1) -> user1.getUserUid().equals(post.getUserUid()))
-                    .findAny().get();
+                    .findAny();
+
+            if (!optUser.isPresent()) {
+                return;
+            }
+
+            User user = optUser.get();
+
             PostForList postForList = new PostForList();
             postForList.postUid = post.uid;
             postForList.UserName = user.getName();

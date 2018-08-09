@@ -31,7 +31,6 @@ public class PostsFirebase {
 
     protected PostsFirebase() {
         // Exists only to defeat instantiation.
-        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
     }
 
     public static PostsFirebase getInstance() {
